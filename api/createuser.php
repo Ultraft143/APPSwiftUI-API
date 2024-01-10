@@ -4,13 +4,12 @@
 $response = array();
 
 if($_SERVER['REQUEST_METHOD']=='POST'){
-    $admin = 0;
 
     //getting values
     $email = $_POST['user_email'];
     $name = $_POST['user_name'];
     $password = $_POST['user_password'];
-    $admin = $_POST['admin'];
+    $admin = 0;
 
     //including the db operation file
     require_once '../includes/dboperations.php';
@@ -18,19 +17,20 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     $db = new DbOperation();
 
     //inserting values 
-    if($db->createTeam($email,$name,$password,$admin)){
-        $response['error']=false;
-        $response['message']='Team added successfully';
-    }else{
+    if($db->createUser($email,$name,$password,$admin)){
 
+        $response['error']=false;
+        $response['message']='User added successfully';
+    }else{
         $response['error']=true;
-        $response['message']='Could not add team';
+        $response['message']='Could not add user';
     }
 
 }else{
     $response['error']=true;
     $response['message']='You are not authorized';
 }
+
 echo json_encode($response);
 
 ?>
