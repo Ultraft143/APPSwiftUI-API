@@ -28,6 +28,17 @@ class DbOperation
         }
     }
 
-}
+    public function getUser($name, $password)
+    {
+        $sql = "SELECT * FROM `users` WHERE `user_name`='$name' AND `user_password`='$password'";
+        $query = mysqli_query($this->conn, $sql);
+        $row_num = mysqli_num_rows($query);
+        if ($row_num != 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
+}
 ?>
