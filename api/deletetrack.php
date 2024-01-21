@@ -6,24 +6,22 @@ $response = array();
 if($_SERVER['REQUEST_METHOD']=='POST'){
 
     //getting values
-    $name = $_POST['user_name'];
-    $password = $_POST['user_password'];
+    $nomeTarck = $_POST['nome'];
+    $textoTrack = $_POST['texto'];
 
     //including the db operation file
     require_once '../includes/dboperations.php';
 
     $db = new DbOperation();
     
-    $result = $db->getUser($name,$password);
+    $query_result = $db->deleteTrack($nomeTarck, $textoTrack);
 
-    //inserting values 
-    if($result != null){
-        $response['id']=$result;
+    if($query_result){
         $response['error']=false;
-        $response['message']='Log in successfully';
+        $response['message']='Track foi apagada com sucesso';
     }else{
         $response['error']=true;
-        $response['message']='Could not Log in';
+        $response['message']='Nao foi possivel apagar a Track';
     }
 
 }else{

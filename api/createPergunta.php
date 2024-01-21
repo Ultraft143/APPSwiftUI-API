@@ -6,24 +6,22 @@ $response = array();
 if($_SERVER['REQUEST_METHOD']=='POST'){
 
     //getting values
-    $name = $_POST['user_name'];
-    $password = $_POST['user_password'];
+    $nome = $_POST['nome'];
+    $email = $_POST['email'];
+    $idTrack = $_POST['idTrack'];
+    $questao = $_POST['pergunta'];
 
     //including the db operation file
     require_once '../includes/dboperations.php';
 
     $db = new DbOperation();
-    
-    $result = $db->getUser($name,$password);
 
-    //inserting values 
-    if($result != null){
-        $response['id']=$result;
+    if(($db->createPergunta($nome,$email,$idTrack,$questao))){
         $response['error']=false;
-        $response['message']='Log in successfully';
+        $response['message']='Pergunta adicionada com sucesso';
     }else{
         $response['error']=true;
-        $response['message']='Could not Log in';
+        $response['message']='Nao foi possivel registar a pergunta';
     }
 
 }else{

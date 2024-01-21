@@ -5,32 +5,32 @@ $response = array();
 
 if($_SERVER['REQUEST_METHOD']=='POST'){
 
-    //getting values
-    $name = $_POST['user_name'];
-    $password = $_POST['user_password'];
-
     //including the db operation file
     require_once '../includes/dboperations.php';
 
     $db = new DbOperation();
-    
-    $result = $db->getUser($name,$password);
+
+    $ID = $_POST['user_id'];
+
+    $arrayResult = $db->getUserbyID($ID);
 
     //inserting values 
-    if($result != null){
-        $response['id']=$result;
-        $response['error']=false;
-        $response['message']='Log in successfully';
+    if($arrayResult != null){
+        //$response['error']=false;
+        //$response['message']='Track loaded successfully!';
+        echo json_encode($arrayResult);
     }else{
         $response['error']=true;
-        $response['message']='Could not Log in';
+        $response['message']='Could not get user';
+
+        echo json_encode($response);
     }
 
 }else{
     $response['error']=true;
     $response['message']='You are not authorized';
-}
 
-echo json_encode($response);
+    echo json_encode($response);
+}
 
 ?>
