@@ -74,6 +74,26 @@ class DbOperation
         return $data;
     }
 
+    public function getHorario()
+    {
+        $sql = "SELECT * FROM `horario`";
+        $query = mysqli_query($this->conn, $sql);
+        $data = array();
+        $row_num = mysqli_num_rows($query);
+        $i = 1;
+        echo("[");
+        while($row = mysqli_fetch_assoc($query)){
+            $data = $row;
+            echo json_encode($row);
+            if($i != $row_num){
+                echo(",");
+            }
+            $i++;
+        }
+        echo("]");
+        return $data;
+    }
+
     public function getUserbyID($ID){
         $sql = "SELECT * FROM `users` WHERE `user_id`='$ID'";
         $query = mysqli_query($this->conn, $sql);
@@ -166,11 +186,10 @@ class DbOperation
             $query = mysqli_query($this->conn, $sql);
             $resultselect = mysqli_fetch_assoc($query);
             $idtrack = $resultselect['id'];
-
-            $stmt2 = "UPDATE artigos SET `titulo`='$titulo', `autores`='$autores', `descricao`='$descricao', `idTrack`='$idtrack' WHERE `idTrack`='$ID'";
+            
+            $stmt2 = "UPDATE artigo SET `titulo`='$titulo', `autores`='$autores', `descricao`='$descricao' WHERE `idTrack`='$ID'";
             $result2 = mysqli_query($this->conn, $stmt2);
             if($result2){
-                
                 $sql2 = "SELECT * FROM `artigo` WHERE `idTrack`='$ID'";
                 $query2 = mysqli_query($this->conn, $sql2);
                 $resultselect2 = mysqli_fetch_assoc($query2);
@@ -212,7 +231,14 @@ class DbOperation
         $sql4 = "SELECT `empresa` FROM `presenca` WHERE `idTrack`='$ID'";
         $query4 = mysqli_query($this->conn, $sql4);
         $result4 = mysqli_fetch_assoc($query4);
-        $masterresult = $result + $result2 + $result3 + $result4;
+
+        if($result4 != NULL){
+            $masterresult = $result + $result2 + $result3 + $result4;
+        }
+        else {
+            $masterresult = $result + $result2 + $result3;
+        }
+        
 
         return $masterresult;
     }
